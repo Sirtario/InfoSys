@@ -1,6 +1,11 @@
 package lagerverwaltung;
 
-public class Bestellposten {
+/**
+ * Stellt einen Bestellposten dar.
+ * @author Maximilian Schumann
+ */
+public class Bestellposten
+{
 
     final private String artikelId;
     private int anzahl;
@@ -9,7 +14,7 @@ public class Bestellposten {
     /**
      * Erstellung Bestellposten-Objekt
      * @param artikelId ID des Bestellpostens
-     * @param anzahl Anzahl der Bestellposten
+     * @param anzahl Anzahl des Bestellpostens
      */
     public Bestellposten(String artikelId, int anzahl)
     {

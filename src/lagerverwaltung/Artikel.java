@@ -1,7 +1,12 @@
 package lagerverwaltung;
 
+/**
+ * Stellt einen Artikel dar, mitsamt ID, Name und Beschreibung
+ * @author Phillip Eckstein
+ */
 public class Artikel 
 {
+
 	private final String id;
 	
 	private String name;
@@ -9,7 +14,7 @@ public class Artikel
 	private String beschreibung;
 	
 	/**
-	 * Gibt den Namen des Artikels zurück
+	 * Gibt den Namen des Artikels zurÃ¼ck
 	 * @return Name des Artikels
 	 */
 	public String getName() {
@@ -25,7 +30,7 @@ public class Artikel
 	}
 
 	/**
-	 * Gibt die bescgreubung des Artikels zurück
+	 * Gibt die Beschreibung des Artikels zurÃ¼ck
 	 * @return beschreibung des Artikels
 	 */
 	public String getBeschreibung() {
@@ -41,8 +46,8 @@ public class Artikel
 	}
 
 	/**
-	 * Gibt di Id des Artikels zurück
-	 * @return die Id de Artikels
+	 * Gibt die Id des Artikels zurÃ¼ck
+	 * @return die Id des Artikels
 	 */
 	public String getId() {
 		return id;

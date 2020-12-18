@@ -1,5 +1,9 @@
 package lagerverwaltung;
 
+/**
+ * Bestellbestaetigung-Objekt mitsamt Information, ob bereits ausgeführt und Gesamtpreis
+ * @author Maximilian Schumann
+ */
 public class Bestellbestaetigung {
 
     private boolean ausgefuehrt;

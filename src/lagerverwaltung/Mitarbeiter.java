@@ -1,16 +1,17 @@
 package lagerverwaltung;
+
 /**
- * Reperesentiert einen Mitarbeiter
+ * ReprÃ¤sentiert einen Mitarbeiter
  * @author Phillip Eckstein
- *
  */
-public class Mitarbeiter {
+public class Mitarbeiter
+{
 	private final String id;
 	
 	private String name;
 	
 	/**
-	 * Gibt die ID des Mitarbeiters zurück
+	 * Gibt die ID des Mitarbeiters zurÃ¼ck
 	 * @return Id des Mitarbeiters
 	 */
 	public String getId() {
@@ -18,7 +19,7 @@ public class Mitarbeiter {
 	}
 	
 	/**
-	 * Gibt den Namen des Mitarbeites zurück
+	 * Gibt den Namen des Mitarbeites zurÃ¼ck
 	 * @return name des Mitarbeiters
 	 */
 	public String getName() {
@@ -27,7 +28,7 @@ public class Mitarbeiter {
 	
 	/**
 	 * 
-	 * @param id = die eindeutige Identifikation eines Mitarbeiters, kann später nicht mehr geändert werden
+	 * @param id = die eindeutige Identifikation eines Mitarbeiters, kann spÃ¤ter nicht mehr geÃ¤ndert werden
 	 * @param name + Name des Mitarbeiters
 	 */
 	public Mitarbeiter(String id, String name) 
