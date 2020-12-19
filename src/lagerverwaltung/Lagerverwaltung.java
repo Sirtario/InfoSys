@@ -61,7 +61,7 @@ public class Lagerverwaltung {
 	}
 	
 	/**
-	 * 
+	 * Gibt den Lagerbestand in die standart konsole aus
 	 */
 	public void LagerbestandAusgeben() 
 	{
@@ -69,11 +69,12 @@ public class Lagerverwaltung {
 	}
 	
 	/**
-	 * 
-	 * @param arbeiter
-	 * @param art
-	 * @param anzahl
-	 * @param preis
+	 * Bucht einen Wareneingang. 
+	 * Wenn es schon Posten mit dem artikel gibt wird der alte preis mit dem neuen Preis überschrieben
+	 * @param arbeiter Der Mitarbeiter, der die Buchung vornimmt
+	 * @param art Der aertikel, der gebucht wird
+	 * @param anzahl die Stückzahl des Artikels
+	 * @param preis Der neue Preis
 	 */
 	public void WareneingangBuchen(Mitarbeiter arbeiter, Artikel art, int anzahl, double preis) 
 	{
@@ -82,9 +83,12 @@ public class Lagerverwaltung {
 
 	
 /**
+ * Führt eine Bestellung aus und entfernt die Posten aus dem Lager
  * 
- * @param arbeiter
- * @return
+ * Bestellungen können nur ausgeführt werden wenn alle posten vollständig vorhanden sind
+ * @param arbeiter Der Mitarbeiter, der die bestellung bearbeitet
+ * @param posten Liste von Posten, die bestellt sind
+ * @return Bestätigung der Bestellung
  */
 	public Bestellbestaetigung BestellungAusführen(Mitarbeiter arbeiter,List<Bestellposten> posten) 
 	{
@@ -92,11 +96,21 @@ public class Lagerverwaltung {
 		//Todo:
 	}
 	
+	/**
+	 * Fügt Lagerposten der Lagerverwaltung hinzu
+	 * @param posten der lagerposten, der hinzu gefügt wird
+	 */
 	public void AddToLagerPosten(Lagerposten posten) 
 	{
+		if(posten == null) throw new IllegalArgumentException("posten cannot be null");
 		
+		lagerPosten.add(posten);
 	}
 
+	/**
+	 * Gibt die Lagerposten zurück
+	 * @return Liste mit Lagerposten
+	 */
 	public List<Lagerposten> getLagerPosten() {
 		return lagerPosten;
 	}
