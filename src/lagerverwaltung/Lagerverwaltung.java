@@ -1,11 +1,13 @@
 package lagerverwaltung;
 
+import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 /**
  * @author Phillip Eckstein
@@ -82,7 +84,7 @@ public class Lagerverwaltung {
 		{
 			var posten = new Lagerposten(art, anzahl, preis);
 			AddToLagerPosten(posten);
-			//SchreibNachrichtInDatei("log.txt", ("Mitarbeiter " +arbeiter.getName()+" hat waren eingebucht:" +art.getName()+" Anzahl: "+anzahl+" Preis:"+preis));
+			SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName()+" hat waren eingebucht:" +art.getName()+" Anzahl: "+anzahl+" Preis:"+preis);
 		}
 		
 	} 
@@ -148,14 +150,19 @@ public class Lagerverwaltung {
 		return lagerPosten;
 	}
 
-
+	/**
+	 * Haengt eine Nachricht an die log Datei an
+	 * 
+	 * quelle: https://howtodoinjava.com/java/io/java-append-to-file/
+	 * @param msg die nachricht, die gelogt werden soll 
+	 */
 	private void SchreibNachrichtInDatei(String msg)
 	{
 		try 
 		{
-			try (PrintWriter w = new PrintWriter(dateiName))
+			try (PrintWriter w = new PrintWriter(new FileWriter(dateiName, true)))
 			{
-				w.println(msg);
+				w.println((new Timestamp(System.currentTimeMillis()).toString()+ " "+ msg));
 			}
 		}
 		catch(Exception e)
