@@ -6,10 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 60d29ce (Add functionality to wareneingangBuchen Method)
 /**
  * @author Phillip Eckstein
  *
@@ -85,24 +82,51 @@ public class Lagerverwaltung {
 		{
 			var posten = new Lagerposten(art, anzahl, preis);
 			AddToLagerPosten(posten);
-			SchreibNachrichtInDatei("log.txt", ("Mitarbeiter " +arbeiter.getName()+" hat waren eingebucht:" +art.getName()+" Anzahl: "+anzahl+" Preis:"+preis));
+			//SchreibNachrichtInDatei("log.txt", ("Mitarbeiter " +arbeiter.getName()+" hat waren eingebucht:" +art.getName()+" Anzahl: "+anzahl+" Preis:"+preis));
 		}
 		
 	} 
 
 	
-/**
- * Führt eine Bestellung aus und entfernt die Posten aus dem Lager
- * 
- * Bestellungen können nur ausgeführt werden wenn alle posten vollständig vorhanden sind
- * @param arbeiter Der Mitarbeiter, der die bestellung bearbeitet
- * @param posten Liste von Posten, die bestellt sind
- * @return Bestätigung der Bestellung
- */
-	public Bestellbestaetigung BestellungAusführen(Mitarbeiter arbeiter,List<Bestellposten> posten) 
+	/**
+ 	* Führt eine Bestellung aus und entfernt die Posten aus dem Lager
+ 	*
+ 	* Bestellung kann nur ausgeführt werden, wenn ArtikelID dem System überhaupt bekannt ist UND Lagerbestand >= Bestellpostenmenge
+ 	* @param arbeiter Der Mitarbeiter, der die bestellung bearbeitet
+ 	* @param besPostenListe Liste von Posten, die bestellt sind
+ 	* @return Bestätigung der Bestellung
+ 	*/
+	public Bestellbestaetigung BestellungAusfuehren(Mitarbeiter arbeiter, List<Bestellposten> besPostenListe)
 	{
-		return null;
-		//Todo:
+		if (lagerPosten.size() == 0) throw new IllegalArgumentException("LagerPosten ist leer!");
+		//Ohne vorhandene Lagerposten kann auch keine Bestellung ausgeführt werden!
+
+		int gesamtpreis = 0;
+
+		for (Bestellposten besPosten : besPostenListe) //besPostenListe enthält mehrere Bestellposten, die abzuarbeiten sind
+		{
+			for (Lagerposten lagPosten : lagerPosten) //Finden eines Lagerpostens, der die ArtikelID hat, die auch der aktuelle Bestellposten sucht
+			{
+				if (lagPosten.getArtikel().getId().equals(besPosten.getArtikelId())) //Hat Artikel des Bestellpostens gleiche Artikel wie aktueller Lagerposten?
+				{
+					if (lagPosten.getLagerbestand() >= besPosten.getAnzahl()) //Gibt es von Artikel mehr Bestand, als Bestellposten verlangt?
+					{
+						lagPosten.setLagerbestand(lagPosten.getLagerbestand() - besPosten.getAnzahl()); //Lagerpostenbestand wird um Anzahl des Bestellpostens verringert
+						gesamtpreis += lagPosten.getPreis() * besPosten.getAnzahl();
+					} else
+					{
+						return new Bestellbestaetigung(false, 0);
+						//Bestellposten konnte nicht durchgeführt werden, da zu wenig Bestand vorhanden ist
+					}
+				} else
+				{
+					return new Bestellbestaetigung(false, 0);
+					//Ist auch nur irgendeine ArtikelID dem System aktuell unbekannt, bricht der gesamte Bestellposten ab
+				}
+			}
+		}
+		return new Bestellbestaetigung(true, gesamtpreis);
+		//Bestellung erfolgreich
 	}
 	
 	/**
