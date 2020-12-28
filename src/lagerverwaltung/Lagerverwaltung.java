@@ -1,5 +1,6 @@
 package lagerverwaltung;
 
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,15 +22,6 @@ public class Lagerverwaltung {
 	 * Erstellt eine neue instanz der Lagerverwaltung
 	 */
 	public Lagerverwaltung() {
-		try
-		{
-			writer = new PrintWriter("log.txt");
-		}
-		catch(Exception e)
-		{
-			//todo: errorhandling
-		}
-		
 		berechtigteMitarbeiter = new HashSet<Mitarbeiter>();
 		lagerPosten = new ArrayList<Lagerposten>();
 	}
@@ -57,7 +49,7 @@ public class Lagerverwaltung {
 	{
 		if (!berechtigteMitarbeiter.remove(arbeiter)) throw new IllegalArgumentException("Mitarbeiter not found");
 		
-		writer.println("Entziehe Mitarbeiter Berechtigung: "+ arbeiter.getName());
+		SchreibNachichtInDatei("log.txt","Einem Mitarbeiter wurde die Berechtigung entzogen"+arbeiter.getName());
 	}
 	
 	/**
@@ -113,5 +105,13 @@ public class Lagerverwaltung {
 	 */
 	public List<Lagerposten> getLagerPosten() {
 		return lagerPosten;
+	}
+	
+	private void SchreibNachrichtInDatei(String dateiname, String msg) throws FileNotFoundException 
+	{
+		try (PrintWriter w = new PrintWriter(dateiname))
+		{
+			
+		}
 	}
 }
