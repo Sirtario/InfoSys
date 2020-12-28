@@ -6,10 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 60d29ce (Add functionality to wareneingangBuchen Method)
 /**
  * @author Phillip Eckstein
  *
@@ -85,7 +81,7 @@ public class Lagerverwaltung {
 		{
 			var posten = new Lagerposten(art, anzahl, preis);
 			AddToLagerPosten(posten);
-			SchreibNachrichtInDatei("log.txt", ("Mitarbeiter " +arbeiter.getName()+" hat waren eingebucht:" +art.getName()+" Anzahl: "+anzahl+" Preis:"+preis));
+			SchreibNachrichtInDatei("Mitarbeiter " +arbeiter.getName()+" hat waren eingebucht:" +art.getName()+" Anzahl: "+anzahl+" Preis:"+preis);
 		}
 		
 	} 
