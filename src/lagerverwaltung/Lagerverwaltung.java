@@ -1,7 +1,10 @@
 package lagerverwaltung;
 
+import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -95,7 +98,7 @@ public class Lagerverwaltung {
  * @param posten Liste von Posten, die bestellt sind
  * @return Bestätigung der Bestellung
  */
-	public Bestellbestaetigung BestellungAusführen(Mitarbeiter arbeiter,List<Bestellposten> posten) 
+	public Bestellbestaetigung BestellungAusfuehren(Mitarbeiter arbeiter,List<Bestellposten> posten) 
 	{
 		return null;
 		//Todo:
@@ -120,14 +123,19 @@ public class Lagerverwaltung {
 		return lagerPosten;
 	}
 
-
+	/**
+	 * Haengt eine Nachricht an die log Datei an
+	 * 
+	 * quelle: https://howtodoinjava.com/java/io/java-append-to-file/
+	 * @param msg die nachricht, die gelogt werden soll 
+	 */
 	private void SchreibNachrichtInDatei(String msg)
 	{
 		try 
 		{
-			try (PrintWriter w = new PrintWriter(dateiName))
+			try (PrintWriter w = new PrintWriter(new FileWriter(dateiName, true)))
 			{
-				w.println(msg);
+				w.println((new Timestamp(System.currentTimeMillis()).toString()+ " "+ msg));
 			}
 		}
 		catch(Exception e)
