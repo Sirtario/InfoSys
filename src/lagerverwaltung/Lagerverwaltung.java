@@ -2,10 +2,13 @@ package lagerverwaltung;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import jdk.internal.org.jline.terminal.impl.ExecPty;
 
 /**
  * @author Phillip Eckstein
@@ -49,7 +52,7 @@ public class Lagerverwaltung {
 	{
 		if (!berechtigteMitarbeiter.remove(arbeiter)) throw new IllegalArgumentException("Mitarbeiter not found");
 		
-		SchreibNachichtInDatei("log.txt","Einem Mitarbeiter wurde die Berechtigung entzogen"+arbeiter.getName());
+		SchreibNachrichtInDatei("log.txt", ("Einem Mitarbeiter wurde die Berechtigung entzogen"+arbeiter.getName()));
 	}
 	
 	/**
@@ -107,11 +110,18 @@ public class Lagerverwaltung {
 		return lagerPosten;
 	}
 	
-	private void SchreibNachrichtInDatei(String dateiname, String msg) throws FileNotFoundException 
+	private void SchreibNachrichtInDatei(String dateiname, String msg)
 	{
-		try (PrintWriter w = new PrintWriter(dateiname))
+		try 
 		{
-			
+			try (PrintWriter w = new PrintWriter(dateiname))
+			{
+				w.println(msg);
+			}
 		}
-	}
+		catch(Exception e)
+		{
+			System.out.println("Could not write to file");
+		}
+	}	
 }
