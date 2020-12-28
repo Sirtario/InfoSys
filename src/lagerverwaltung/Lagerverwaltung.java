@@ -2,13 +2,11 @@ package lagerverwaltung;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import jdk.internal.org.jline.terminal.impl.ExecPty;
 
 /**
  * @author Phillip Eckstein
@@ -17,9 +15,11 @@ import jdk.internal.org.jline.terminal.impl.ExecPty;
 public class Lagerverwaltung {
 	
 	private Set<Mitarbeiter> berechtigteMitarbeiter;
-	
 	private List<Lagerposten> lagerPosten;
-	private PrintWriter writer;
+
+	private final String dateiName;
+	//private PrintWriter writer;
+	//Wir benutzen diese Variable nicht, und erzeugen sie stattdessen in einer Methode, sobald geschrieben wird.
 
 	/**
 	 * Erstellt eine neue instanz der Lagerverwaltung
@@ -27,6 +27,7 @@ public class Lagerverwaltung {
 	public Lagerverwaltung() {
 		berechtigteMitarbeiter = new HashSet<Mitarbeiter>();
 		lagerPosten = new ArrayList<Lagerposten>();
+		dateiName = "log.txt";
 	}
 	
 	public Set<Mitarbeiter> getBerechtigteMitarbeiter() {
@@ -37,12 +38,15 @@ public class Lagerverwaltung {
 	 * Erteilt einem Mitarbeiter Berechtigung
 	 * @param arbeiter Der Mitarbeiter, der Berechtigung erhalten soll
 	 */
-	public void BerechtigungErteilen(Mitarbeiter arbeiter) 
+	public void BerechtigungErteilen(Mitarbeiter arbeiter)
 	{
+		if (arbeiter.getName() == null || arbeiter.getId() == null) throw new IllegalArgumentException("Name oder Id ist null");
+
 		berechtigteMitarbeiter.add(arbeiter);
-		writer.println("Berechtigung Erteilt: "+ arbeiter.getName());
+		SchreibNachrichtInDatei("Berechtigung erteilt fÃ¼r " + arbeiter.getName());
 	}
-	
+
+
 	/**
 	 * Entzieht einem Mitarbeiter die Berechtigung
 	 * 
@@ -50,9 +54,11 @@ public class Lagerverwaltung {
 	 */
 	public void BerechtigungEntziehen(Mitarbeiter arbeiter) 
 	{
+		if (arbeiter.getName() == null || arbeiter.getId() == null) throw new IllegalArgumentException("Name oder Id ist null");
+
 		if (!berechtigteMitarbeiter.remove(arbeiter)) throw new IllegalArgumentException("Mitarbeiter not found");
 		
-		SchreibNachrichtInDatei("log.txt", ("Einem Mitarbeiter wurde die Berechtigung entzogen"+arbeiter.getName()));
+		SchreibNachrichtInDatei("Berechtigung entzogen fÃ¼r "+ arbeiter.getName());
 	}
 	
 	/**
@@ -65,10 +71,10 @@ public class Lagerverwaltung {
 	
 	/**
 	 * Bucht einen Wareneingang. 
-	 * Wenn es schon Posten mit dem artikel gibt wird der alte preis mit dem neuen Preis überschrieben
+	 * Wenn es schon Posten mit dem artikel gibt wird der alte preis mit dem neuen Preis Ã¼berschrieben
 	 * @param arbeiter Der Mitarbeiter, der die Buchung vornimmt
 	 * @param art Der aertikel, der gebucht wird
-	 * @param anzahl die Stückzahl des Artikels
+	 * @param anzahl die StÃ¼ckzahl des Artikels
 	 * @param preis Der neue Preis
 	 */
 	public void WareneingangBuchen(Mitarbeiter arbeiter, Artikel art, int anzahl, double preis) 
@@ -78,22 +84,22 @@ public class Lagerverwaltung {
 
 	
 /**
- * Führt eine Bestellung aus und entfernt die Posten aus dem Lager
+ * FÃ¼hrt eine Bestellung aus und entfernt die Posten aus dem Lager
  * 
- * Bestellungen können nur ausgeführt werden wenn alle posten vollständig vorhanden sind
+ * Bestellungen kÃ¶nnen nur ausgefÃ¼hrt werden wenn alle posten vollstÃ¤ndig vorhanden sind
  * @param arbeiter Der Mitarbeiter, der die bestellung bearbeitet
  * @param posten Liste von Posten, die bestellt sind
- * @return Bestätigung der Bestellung
+ * @return BestÃ¤tigung der Bestellung
  */
-	public Bestellbestaetigung BestellungAusführen(Mitarbeiter arbeiter,List<Bestellposten> posten) 
+	public Bestellbestaetigung BestellungAusfÃ¼hren(Mitarbeiter arbeiter,List<Bestellposten> posten) 
 	{
 		return null;
 		//Todo:
 	}
 	
 	/**
-	 * Fügt Lagerposten der Lagerverwaltung hinzu
-	 * @param posten der lagerposten, der hinzu gefügt wird
+	 * FÃ¼gt Lagerposten der Lagerverwaltung hinzu
+	 * @param posten der lagerposten, der hinzu gefÃ¼gt wird
 	 */
 	public void AddToLagerPosten(Lagerposten posten) 
 	{
@@ -103,18 +109,19 @@ public class Lagerverwaltung {
 	}
 
 	/**
-	 * Gibt die Lagerposten zurück
+	 * Gibt die Lagerposten zurÃ¼ck
 	 * @return Liste mit Lagerposten
 	 */
 	public List<Lagerposten> getLagerPosten() {
 		return lagerPosten;
 	}
-	
-	private void SchreibNachrichtInDatei(String dateiname, String msg)
+
+
+	private void SchreibNachrichtInDatei(String msg)
 	{
 		try 
 		{
-			try (PrintWriter w = new PrintWriter(dateiname))
+			try (PrintWriter w = new PrintWriter(dateiName))
 			{
 				w.println(msg);
 			}
