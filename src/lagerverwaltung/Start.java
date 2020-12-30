@@ -17,13 +17,14 @@ public class Start {
 		Bestellposten besposten1 = new Bestellposten("1", 50);
 		Bestellposten besposten2 = new Bestellposten("2", 27);
 
-		List<Bestellposten> besPostenListe = new ArrayList<Bestellposten>();
+		List<Bestellposten> besPostenListe = new ArrayList<>();
+		besPostenListe.add(besposten1);
 		besPostenListe.add(besposten2);
 
 		lager.BerechtigungErteilen(mitarbeiter1);
 		//lager.BerechtigungEntziehen(mitarbeiter1);
 		lager.BerechtigungErteilen(mitarbeiter2);
-		lager.BerechtigungEntziehen(mitarbeiter2);
+
 
 //		System.out.println("Lagerposten");
 //		System.out.println(lagposten1.getArtikel().getName() + " " + lagposten1.getLagerbestand() + " " + lagposten1.getPreis());
@@ -46,12 +47,13 @@ public class Start {
 		System.out.println("----");
 
 		lager.WareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
+		lager.WareneingangBuchen(mitarbeiter2, artikel1, 250, 9);
 
 		Bestellbestaetigung bestellbestaetigung = lager.BestellungAusfuehren(mitarbeiter1, besPostenListe);
 		System.out.println(bestellbestaetigung.getGesamtpreis());
 		System.out.println(bestellbestaetigung.isAusgefuehrt());
 
-		System.out.println(lager.getLagerPosten().get(0).getLagerbestand()); //Testzwecke
+		//System.out.println(lager.getLagerPosten().get(0).getLagerbestand()); //Testzwecke
 	}
 
 
