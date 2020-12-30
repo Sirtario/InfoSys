@@ -21,6 +21,7 @@ public class Lagerverwaltung {
 	//private PrintWriter writer;
 	//Wir benutzen diese Variable nicht, und erzeugen sie stattdessen in einer Methode, sobald geschrieben wird.
 
+
 	/**
 	 * Erstellt eine neue instanz der Lagerverwaltung
 	 */
@@ -98,14 +99,22 @@ public class Lagerverwaltung {
  	* Bestellung kann nur ausgeführt werden, wenn ArtikelID dem System überhaupt bekannt ist UND Lagerbestand >= Bestellpostenmenge
  	* @param arbeiter Der Mitarbeiter, der die bestellung bearbeitet
  	* @param besPostenListe Liste von Posten, die bestellt sind
- 	* @return Bestätigung der Bestellung
+ 	* @return Bestätigung der Bestellung, true wenn erfolgreich, false wenn nicht erfolgreich
  	*/
 	public Bestellbestaetigung BestellungAusfuehren(Mitarbeiter arbeiter, List<Bestellposten> besPostenListe)
 	{
 		if (lagerPosten.size() == 0) throw new IllegalArgumentException("LagerPosten ist leer!");
 		//Ohne vorhandene Lagerposten kann auch keine Bestellung ausgeführt werden!
+		if (besPostenListe.size() == 0) throw new IllegalArgumentException("Bestellpostenliste ist leer!");
 
-		int gesamtpreis = 0;
+		if (!berechtigteMitarbeiter.contains((arbeiter)))
+		{
+			SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat versucht, eine Bestellung auszuführen, obwohl er nicht befugt ist.");
+			return new Bestellbestaetigung(false, 0);
+		}
+
+		float gesamtpreis = 0;
+
 
 		for (Bestellposten besPosten : besPostenListe) //besPostenListe enthält mehrere Bestellposten, die abzuarbeiten sind
 		{
@@ -117,22 +126,46 @@ public class Lagerverwaltung {
 					{
 						lagPosten.setLagerbestand(lagPosten.getLagerbestand() - besPosten.getAnzahl()); //Lagerpostenbestand wird um Anzahl des Bestellpostens verringert
 						gesamtpreis += lagPosten.getPreis() * besPosten.getAnzahl();
+						break;
 					} else
 					{
+						SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName()+ " hat erfolglos Bestellung ausgeführt, Fehler: ArtikelID " + besPosten.getArtikelId() + " zu wenig im Lager.");
 						return new Bestellbestaetigung(false, 0);
 						//Bestellposten konnte nicht durchgeführt werden, da zu wenig Bestand vorhanden ist
 					}
-				} else
+				} else if (lagPosten == lagerPosten.get(lagerPosten.size()-1))
 				{
+					SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName()+ " hat erfolglos Bestellung ausgeführt, Fehler: ArtikelID " + besPosten.getArtikelId() + " System nicht bekannt.");
 					return new Bestellbestaetigung(false, 0);
 					//Ist auch nur irgendeine ArtikelID dem System aktuell unbekannt, bricht der gesamte Bestellposten ab
+
 				}
 			}
 		}
+
+
+		//Bestellung ist erfolgreich gewesen und jetzt wird geloggt, welche Artikel rausgingen
+		//StringBuilder Vorschlag von IDE; soll laut Recherche wohl bessere Performanz aufweisen und weniger fehleranfällig sein
+		StringBuilder IDs = new StringBuilder();
+		IDs.append(besPostenListe.get(0).getArtikelId());
+		if (besPostenListe.size() == 1)
+		{
+			IDs = new StringBuilder(besPostenListe.get(0).getArtikelId());
+		} else
+		{
+			for (int i = 1; i < besPostenListe.size(); i++)
+			{
+				IDs.append(", ").append(besPostenListe.get(i).getArtikelId());
+			}
+		}
+
+
+		SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat erfolgreich Bestellung ausgeführt. ArtikelIDs: " + IDs + ", Preis: " + gesamtpreis +"€");
 		return new Bestellbestaetigung(true, gesamtpreis);
 		//Bestellung erfolgreich
 	}
-	
+
+
 	/**
 	 * Fügt Lagerposten der Lagerverwaltung hinzu
 	 * @param posten der lagerposten, der hinzu gefügt wird
