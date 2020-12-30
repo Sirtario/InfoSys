@@ -46,6 +46,9 @@ public class Start {
 		System.out.println("----");
 
 		lager.WareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
+		lager.WareneingangBuchen(mitarbeiter1, artikel1, 300, 2);
+		
+		lager.LagerbestandAusgeben();
 
 		Bestellbestaetigung bestellbestaetigung = lager.BestellungAusfuehren(mitarbeiter1, besPostenListe);
 		System.out.println(bestellbestaetigung.getGesamtpreis());

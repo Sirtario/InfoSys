@@ -66,7 +66,10 @@ public class Lagerverwaltung {
 	 */
 	public void LagerbestandAusgeben() 
 	{
-		
+		for(Lagerposten posten : lagerPosten) 
+		{
+			System.out.println("Artikelname: "+ posten.getArtikel().getName()+" Stückzahl: "+posten.getLagerbestand()+" Preis: "+ posten.getPreis());
+		}
 	}
 	
 	/**
