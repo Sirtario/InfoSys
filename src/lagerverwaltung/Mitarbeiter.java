@@ -8,7 +8,7 @@ public class Mitarbeiter
 {
 	private final String id;
 	
-	private String name;
+	private final String name;
 	
 	/**
 	 * Gibt die ID des Mitarbeiters zurück
@@ -27,7 +27,7 @@ public class Mitarbeiter
 	}
 	
 	/**
-	 * 
+	 * Erstellt einen Mitarbeiter mitsamt ID und Namen
 	 * @param id = die eindeutige Identifikation eines Mitarbeiters, kann später nicht mehr geändert werden
 	 * @param name + Name des Mitarbeiters
 	 */

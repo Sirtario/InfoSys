@@ -6,8 +6,8 @@ package lagerverwaltung;
  */
 public class Bestellbestaetigung {
 
-    private boolean ausgefuehrt;
-    private double gesamtpreis;
+    private final boolean ausgefuehrt;
+    private final double gesamtpreis;
 
     /**
      * Erstellung eines Bestellbestaetigung-Objektes:

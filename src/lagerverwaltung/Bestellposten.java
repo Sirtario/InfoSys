@@ -1,7 +1,7 @@
 package lagerverwaltung;
 
 /**
- * Stellt einen Bestellposten dar.
+ * Stellt einen Bestellposten dar mitsamt ArtikelID und Anzahl des geforderten Artikels
  * @author Maximilian Schumann
  */
 public class Bestellposten

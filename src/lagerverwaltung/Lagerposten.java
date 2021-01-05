@@ -9,14 +9,14 @@ public class Lagerposten {
 
     private int lagerbestand;
     private double preis;
-    private Artikel artikel;
+    private final Artikel artikel;
 
 
     /**
      * Erstellt ein Lagerposten-Objekt
      * @param artikel Lagerposten erhält bei Erstellung ein Artikel-Objekt
      * @param lagerbestand Lagerposten erhält bei Erstellung Lagerbestand eines Artikels
-     * @param preis Lagerposten erhält bei Erstellung den preis eines Artikels
+     * @param preis Lagerposten erhält bei Erstellung den Preis eines Artikels
      */
     public Lagerposten(Artikel artikel, int lagerbestand, double preis)
     {
@@ -27,8 +27,8 @@ public class Lagerposten {
 
 
     /**
-     * Gibt Anzahl des Lagerbestands des Lagerpostens zurück
-     * @return lagerbestand
+     * Gibt Lagerbestand des Lagerpostens zurück
+     * @return lagerbestand Anzahl des Lagerbestands
      */
     public int getLagerbestand() {
         return lagerbestand;
@@ -37,7 +37,7 @@ public class Lagerposten {
 
     /**
      * Setzt den Lagerbestand des Lagerpostens
-     * @param lagerbestand Anzahl des Lagerbestands
+     * @param lagerbestand Anzahl des gewünschten Lagerbestands
      */
     public void setLagerbestand(int lagerbestand) {
         this.lagerbestand = lagerbestand;
