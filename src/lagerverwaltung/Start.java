@@ -21,9 +21,9 @@ public class Start {
 		besPostenListe.add(besposten1);
 		besPostenListe.add(besposten2);
 
-		lager.BerechtigungErteilen(mitarbeiter1);
+		lager.berechtigungErteilen(mitarbeiter1);
 		//lager.BerechtigungEntziehen(mitarbeiter1);
-		lager.BerechtigungErteilen(mitarbeiter2);
+		lager.berechtigungErteilen(mitarbeiter2);
 
 
 //		System.out.println("Lagerposten");
@@ -46,12 +46,12 @@ public class Start {
 		System.out.println(artikel2.getId() + " " + artikel2.getName() + " " + artikel2.getBeschreibung());
 		System.out.println("----");
 
-		lager.WareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
-		lager.WareneingangBuchen(mitarbeiter1, artikel1, 300, 2);
-		lager.LagerbestandAusgeben();
+		lager.wareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
+		lager.wareneingangBuchen(mitarbeiter1, artikel1, 300, 2);
+		lager.lagerbestandAusgeben();
 
 
-		Bestellbestaetigung bestellbestaetigung = lager.BestellungAusfuehren(mitarbeiter1, besPostenListe);
+		Bestellbestaetigung bestellbestaetigung = lager.bestellungAusfuehren(mitarbeiter1, besPostenListe);
 		System.out.println(bestellbestaetigung.getGesamtpreis());
 		System.out.println(bestellbestaetigung.isAusgefuehrt());
 

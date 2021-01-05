@@ -39,12 +39,12 @@ public class Lagerverwaltung {
 	 * Erteilt einem Mitarbeiter Berechtigung, die Lagerverwaltung nutzen zu dürfen.
 	 * @param arbeiter Der Mitarbeiter, der Befugnisse erhalten soll.
 	 */
-	public void BerechtigungErteilen(Mitarbeiter arbeiter)
+	public void berechtigungErteilen(Mitarbeiter arbeiter)
 	{
 		if (arbeiter.getName() == null || arbeiter.getId() == null) throw new IllegalArgumentException("Name oder Id ist null");
 
 		berechtigteMitarbeiter.add(arbeiter);
-		SchreibNachrichtInDatei("Berechtigung erteilt für " + arbeiter.getName());
+		schreibNachrichtInDatei("Berechtigung erteilt für " + arbeiter.getName());
 	}
 
 
@@ -52,20 +52,20 @@ public class Lagerverwaltung {
 	 * Entzieht einem Mitarbeiter die Rechte auf die Lagerverwaltung.
 	 * @param arbeiter Der Mitarbeiter der die berechtigung entzogen bekommen soll.
 	 */
-	public void BerechtigungEntziehen(Mitarbeiter arbeiter) 
+	public void berechtigungEntziehen(Mitarbeiter arbeiter)
 	{
 		if (arbeiter.getName() == null || arbeiter.getId() == null) throw new IllegalArgumentException("Name oder ID ist null");
 
 		if (!berechtigteMitarbeiter.remove(arbeiter)) throw new IllegalArgumentException("Mitarbeiter not found");
 		
-		SchreibNachrichtInDatei("Berechtigung entzogen für "+ arbeiter.getName());
+		schreibNachrichtInDatei("Berechtigung entzogen für "+ arbeiter.getName());
 	}
 
 
 	/**
 	 * Gibt den aktuellen Lagerbestand in die Standardkonsole aus.
 	 */
-	public void LagerbestandAusgeben() 
+	public void lagerbestandAusgeben()
 	{
 		for(Lagerposten posten : lagerPostenListe)
 		{
@@ -82,14 +82,14 @@ public class Lagerverwaltung {
 	 * @param anzahl die Stückzahl des Artikels
 	 * @param preis Der Preis des Artikels
 	 */
-	public void WareneingangBuchen(Mitarbeiter arbeiter, Artikel artikel, int anzahl, double preis)
+	public void wareneingangBuchen(Mitarbeiter arbeiter, Artikel artikel, int anzahl, double preis)
 	{
 		//Wareneingang nur zulässig, wenn ein berechtiger Mitarbeiter dies ausführt
 		if(berechtigteMitarbeiter.contains(arbeiter)) 
 		{
 			var posten = new Lagerposten(artikel, anzahl, preis);
-			AddToLagerPosten(posten);
-			SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat Ware eingebucht: " + "ID: " + artikel.getId() + ", " + artikel.getName()+ " Anzahl: " +anzahl+ " Preis: " + preis + "€");
+			addToLagerPosten(posten);
+			schreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat Ware eingebucht: " + "ID: " + artikel.getId() + ", " + artikel.getName()+ " Anzahl: " +anzahl+ " Preis: " + preis + "€");
 		}
 	} 
 
@@ -101,7 +101,7 @@ public class Lagerverwaltung {
  	* @param besPostenListe Liste von Posten, die bestellt sind
  	* @return Bestätigung der Bestellung, true wenn erfolgreich, false wenn nicht erfolgreich
  	*/
-	public Bestellbestaetigung BestellungAusfuehren(Mitarbeiter arbeiter, List<Bestellposten> besPostenListe)
+	public Bestellbestaetigung bestellungAusfuehren(Mitarbeiter arbeiter, List<Bestellposten> besPostenListe)
 	{
 		if (lagerPostenListe.size() == 0) throw new IllegalArgumentException("LagerPosten ist leer!");
 		//Ohne vorhandene Lagerposten kann auch keine Bestellung ausgeführt werden!
@@ -111,7 +111,7 @@ public class Lagerverwaltung {
 
 		if (!berechtigteMitarbeiter.contains((arbeiter)))
 		{
-			SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat versucht, eine Bestellung auszuführen, obwohl er nicht befugt ist.");
+			schreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat versucht, eine Bestellung auszuführen, obwohl er nicht befugt ist.");
 			return new Bestellbestaetigung(false, 0);
 		}
 
@@ -131,13 +131,13 @@ public class Lagerverwaltung {
 						break; //Damit, bei erfolgreichem Abziehen, nicht unnötig nach weiteren Übereinstimmungen der ArtikelID gesucht wird
 					} else
 					{
-						SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName()+ " hat erfolglos Bestellung ausgeführt, Fehler: ArtikelID " + besPosten.getArtikelId() + " zu wenig im Lager.");
+						schreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName()+ " hat erfolglos Bestellung ausgeführt, Fehler: ArtikelID " + besPosten.getArtikelId() + " zu wenig im Lager.");
 						return new Bestellbestaetigung(false, 0);
 						//Bestellposten konnte nicht verarbeitet werden, da zu wenig Bestand vorhanden ist
 					}
 				} else if (lagPosten == lagerPostenListe.get(lagerPostenListe.size()-1)) //Nur, wenn das gesamte Lager durchsucht worden ist, sind Fehlschläge erlaubt
 				{
-					SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat erfolglos Bestellung ausgeführt, Fehler: ArtikelID " + besPosten.getArtikelId() + " System nicht bekannt.");
+					schreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat erfolglos Bestellung ausgeführt, Fehler: ArtikelID " + besPosten.getArtikelId() + " System nicht bekannt.");
 					return new Bestellbestaetigung(false, 0);
 					//Ist auch nur irgendeine ArtikelID dem System aktuell unbekannt, bricht der gesamte Bestellposten ab
 				}
@@ -147,17 +147,17 @@ public class Lagerverwaltung {
 		//Bestellung ist erfolgreich gewesen und jetzt wird geloggt, welche Artikel rausgingen
 		//StringBuilder Vorschlag von IDE; soll laut Recherche wohl bessere Performanz aufweisen und weniger fehleranfällig sein
 		StringBuilder IDs = new StringBuilder();
-		IDs.append(besPostenListe.get(0).getArtikelId());
+		IDs.append(besPostenListe.get(0).getArtikelId()); //Mindestens ein Artikel wird bestellt worden sein
 
-		if (besPostenListe.size() > 1)
+		if (besPostenListe.size() > 1) //Gibt es mehr als einen Artikel, werden diese nacheinander angehangen
 		{
-			for (int i = 1; i < besPostenListe.size(); i++)
+			for (int i = 1; i < besPostenListe.size(); i++) //int i = 1, weil Artikel mit Index 0 bereits in IDs ist
 			{
-				IDs.append(", ").append(besPostenListe.get(i).getArtikelId());
+				IDs.append(", ").append(besPostenListe.get(i).getArtikelId()); //IDs wird ein Komma und die ID des anzuhängenden Artikels angehängt
 			}
 		}
 
-		SchreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat erfolgreich Bestellung ausgeführt. ArtikelIDs: " + IDs + ", Gesamtpreis: " + gesamtpreis +"€");
+		schreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat erfolgreich Bestellung ausgeführt. ArtikelIDs: " + IDs + ", Gesamtpreis: " + gesamtpreis +"€");
 		return new Bestellbestaetigung(true, gesamtpreis);
 		//Bestellung erfolgreich
 	}
@@ -165,9 +165,9 @@ public class Lagerverwaltung {
 
 	/**
 	 * Fügt Lagerposten der Lagerverwaltung hinzu
-	 * @param posten der lagerposten, der hinzu gefügt wird
+	 * @param posten der Lagerposten, der hinzugefügt wird
 	 */
-	public void AddToLagerPosten(Lagerposten posten) 
+	public void addToLagerPosten(Lagerposten posten)
 	{
 		if(posten == null) throw new IllegalArgumentException("posten cannot be null");
 		
@@ -199,7 +199,7 @@ public class Lagerverwaltung {
 	 * Quelle: https://howtodoinjava.com/java/io/java-append-to-file/
 	 * @param msg die Nachricht, die geloggt werden soll.
 	 */
-	private void SchreibNachrichtInDatei(String msg)
+	private void schreibNachrichtInDatei(String msg)
 	{
 		//Try-Catch-Konstrukt, damit - sollte irgendein Fehler passieren - das Programm nicht abstürzt
 		try 
@@ -207,7 +207,7 @@ public class Lagerverwaltung {
 			//Try-With-Resources-Konstrukt, damit die Ressource nach Nutzung wieder freigegeben wird
 			try (PrintWriter writer = new PrintWriter(new FileWriter(dateiName, true)))
 			{
-				writer.println((new Timestamp(System.currentTimeMillis()).toString()+ " "+ msg));
+				writer.println((new Timestamp(System.currentTimeMillis()).toString()+ " " + msg));
 			}
 		}
 		catch(Exception e) //Exception e -> irgendeine Exception; es werden alle hier abgefangen
