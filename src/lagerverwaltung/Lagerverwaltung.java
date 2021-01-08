@@ -56,6 +56,7 @@ public class Lagerverwaltung {
 	 * Entzieht einem Mitarbeiter die Rechte auf die Lagerverwaltung.
 	 * @param arbeiter Der Mitarbeiter der die berechtigung entzogen bekommen soll.
 	 */
+	@SuppressWarnings("unused")
 	public void berechtigungEntziehen(Mitarbeiter arbeiter)
 	{
 		if (arbeiter.getName() == null || arbeiter.getId() == null) throw new IllegalArgumentException("Name oder ID ist null");
@@ -81,6 +82,8 @@ public class Lagerverwaltung {
 	/**
 	 * Bucht einen Wareneingang. 
 	 * Wenn es bereits einen Lagerposten mit diesem Artikel gibt, wird der alte Preis mit dem neuen Preis überschrieben.
+	 * Zudem wird die Anzahl des Lagerpostens mit dem neuen Wareneingang addiert.
+	 * Es ist nicht möglich, einen Artikel mit mehreren Lagerposten mit verschiedenen Preisen im System zu hinterlegen.
 	 * @param arbeiter Der Mitarbeiter, der die Buchung vornimmt
 	 * @param artikel Der Artikel, der eingebucht wird
 	 * @param anzahl die Stückzahl des Artikels
@@ -93,7 +96,7 @@ public class Lagerverwaltung {
 		{
 			var posten = new Lagerposten(artikel, anzahl, preis);
 			addToLagerPosten(posten);
-			schreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat Ware eingebucht: " + "ID: " + artikel.getId() + ", " + artikel.getName()+ " Anzahl: " +anzahl+ " Preis: " + preis + "€");
+			schreibNachrichtInDatei("Mitarbeiter " + arbeiter.getName() + " hat Ware eingebucht: " + "ID: " + artikel.getId() + ", " + artikel.getName() + " Anzahl: " + anzahl + " Preis: " + preis + "€");
 		}
 	} 
 
@@ -168,39 +171,42 @@ public class Lagerverwaltung {
 
 
 	/**
-	 * Fügt Lagerposten der Lagerverwaltung hinzu
+	 * Fügt Lagerposten der Lagerverwaltung hinzu.
+	 * Diese Methode checkt keine Berechtigung und loggt auch nicht!
 	 * @param posten der Lagerposten, der hinzugefügt wird
 	 */
 	public void addToLagerPosten(Lagerposten posten)
 	{
 		if(posten == null) throw new IllegalArgumentException("posten cannot be null");
 		
-		if(PostenAllreadyExists(posten)) 
+		if(postenAlreadyExists(posten))
 		{
-			UpdatePosten(posten);
+			updatePosten(posten);
 		}
 		else 
 		{			
 			lagerPostenListe.add(posten);
 		}
 	}
-	
+
+
 	/**
-	 * Prüft ob ein Posten mit dem selben artikel bereits existiert
-	 * @param posten Posten mit artikel, der geprüft werden soll
-	 * @return True wenn es artikel bereits gibt, False wenn nicht
+	 * Prüft, ob ein Lagerposten mit dem selben Artikel bereits existiert
+	 * @param posten Lagerposten mit Artikel, der geprüft werden soll
+	 * @return True wenn es Artikel bereits gibt, False wenn nicht
 	 */
-	private boolean PostenAllreadyExists(Lagerposten posten) 
+	private boolean postenAlreadyExists(Lagerposten posten)
 	{
-		for(Lagerposten p : lagerPostenListe) 
+		for(Lagerposten p : lagerPostenListe) //Die gesamte Lagerpostenliste wird nach unserem zu prüfenden Artikel durchsucht
 		{
-			if(p.getArtikel().getId() == posten.getArtikel().getId()) 
+			if(p.getArtikel().getId().equals(posten.getArtikel().getId()))
 			{
 				return true;
 			}
 		}
 		return false;
 	}
+
 
 	/**
 	 * Updated einen vorhandenen Posten mit den Informationen im gegebenen Posten. 
@@ -209,32 +215,35 @@ public class Lagerverwaltung {
 	 * 
 	 * @param postenupdate ein Lagerposten der die informtionen zum updaten enthält.
 	 */
-	private void UpdatePosten(Lagerposten postenupdate) 
+	private void updatePosten(Lagerposten postenupdate)
 	{
 		Lagerposten postenToBeUpdated = null;
 		
 		for(Lagerposten p : lagerPostenListe) 
 		{
-			if(p.getArtikel().getId() == postenupdate.getArtikel().getId()) 
+			if(p.getArtikel().getId().equals(postenupdate.getArtikel().getId()))
 			{
 				postenToBeUpdated = p;
+				break;
 			}
 		}
 		
-		if(postenToBeUpdated == null) 
+		if(postenToBeUpdated == null) //postenToBeUpdated wird nicht null sein, wenn er eine Referenz auf einen bestehenden Lagerposten erhält
 		{
-			//Kein übereinstimmender Posten gefunden
+			//Kein übereinstimmender Lagerposten gefunden
 			throw new NullPointerException("Could not find Posten to Update");
 		}
 		
-		postenToBeUpdated.setLagerbestand(postenToBeUpdated.getLagerbestand()+postenupdate.getLagerbestand());
-		postenToBeUpdated.setPreis(postenupdate.getPreis());
+		postenToBeUpdated.setLagerbestand(postenToBeUpdated.getLagerbestand() + postenupdate.getLagerbestand()); //Bestand aktualisieren
+		postenToBeUpdated.setPreis(postenupdate.getPreis()); //Preis wird aktualisiert
 	}
+
 
 	/**
 	 * Gibt die Lagerposten als Liste zurück.
 	 * @return Liste mit Lagerposten-Objekten
 	 */
+	@SuppressWarnings("unused")
 	public List<Lagerposten> getLagerPostenListe() {
 		return lagerPostenListe;
 	}
@@ -244,6 +253,7 @@ public class Lagerverwaltung {
 	 * Gibt die berechtigten Mitarbeiter als Set zurück.
 	 * @return Set mit Mitarbeiter-Objekten
 	 */
+	@SuppressWarnings("unused")
 	public Set<Mitarbeiter> getBerechtigteMitarbeiter() {
 		return berechtigteMitarbeiter;
 	}

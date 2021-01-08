@@ -33,7 +33,7 @@ public class Start {
 
 		System.out.println("Mitarbeiter");
 		System.out.println(mitarbeiter1.getId() + " " + mitarbeiter1.getName());
-		System.out.println(mitarbeiter2.getId() + " " + mitarbeiter1.getName());
+		System.out.println(mitarbeiter2.getId() + " " + mitarbeiter2.getName());
 		System.out.println("----");
 
 		System.out.println("Bestellposten");
@@ -49,6 +49,7 @@ public class Start {
 		lager.wareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
 		lager.wareneingangBuchen(mitarbeiter1, artikel1, 300, 2);
 		lager.addToLagerPosten(new Lagerposten(artikel1, 45, 3.02));
+		lager.wareneingangBuchen(mitarbeiter2, artikel1, 23700, 0.21);
 		lager.lagerbestandAusgeben();
 
 

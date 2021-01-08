@@ -7,14 +7,14 @@ package lagerverwaltung;
 public class Bestellposten
 {
 
-    final private String artikelId;
-    private int anzahl;
+    private final String artikelId;
+    private final int anzahl;
 
 
     /**
      * Erstellung Bestellposten-Objekt
      * @param artikelId ID des Bestellpostens
-     * @param anzahl Anzahl des Bestellpostens
+     * @param anzahl Anzahl des Artikels im Bestellposten
      */
     public Bestellposten(String artikelId, int anzahl)
     {
