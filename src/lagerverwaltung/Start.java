@@ -48,6 +48,7 @@ public class Start {
 
 		lager.wareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
 		lager.wareneingangBuchen(mitarbeiter1, artikel1, 300, 2);
+		lager.addToLagerPosten(new Lagerposten(artikel1, 45, 3.02));
 		lager.lagerbestandAusgeben();
 
 
