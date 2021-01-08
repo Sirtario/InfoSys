@@ -13,12 +13,16 @@ import java.util.Set;
  * @author Maximilian Schumann
  *
  * Die Lagerverwaltungs-Klasse nach den Vorgaben des InfoSys-Projekt
- * WS 2020/2021
+ * Programmierung 1, WS 2020/2021
  */
 public class Lagerverwaltung {
 	
 	private final Set<Mitarbeiter> berechtigteMitarbeiter;
+	/* berechtigteMitarbeiter Set von Mitarbeiter nicht von String, da wir den Namen der Mitarbeiter zum Loggen benutzen
+	und kein Auflösen von ID -> Name nötig wird; prinzipiell würde ansonsten die (hoffentlich eindeutige) ID des Mitarbeiters
+	hier gespeichert werden */
 	private final List<Lagerposten> lagerPostenListe;
+	//Variablenname "lagerposten" (laut Klassendiagramm) leicht irreführend/nichtsaussagend über Datentyp, deshalb Umbenennung
 	private final String dateiName;
 	//private PrintWriter writer;
 	//Wir benutzen diese Variable nicht, und erzeugen sie stattdessen in einer Methode, sobald geschrieben wird.
@@ -146,7 +150,7 @@ public class Lagerverwaltung {
 
 		//Bestellung ist erfolgreich gewesen und jetzt wird geloggt, welche Artikel rausgingen
 		//StringBuilder Vorschlag von IDE; soll laut Recherche wohl bessere Performanz aufweisen und weniger fehleranfällig sein
-		StringBuilder IDs = new StringBuilder();
+		StringBuilder IDs = new StringBuilder(); //StringBuilder-Objekt mutable, Strings nicht
 		IDs.append(besPostenListe.get(0).getArtikelId()); //Mindestens ein Artikel wird bestellt worden sein
 
 		if (besPostenListe.size() > 1) //Gibt es mehr als einen Artikel, werden diese nacheinander angehangen
