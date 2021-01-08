@@ -25,32 +25,39 @@ public class Start {
 		//lager.BerechtigungEntziehen(mitarbeiter1);
 		lager.berechtigungErteilen(mitarbeiter2);
 
+		lager.wareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
+		lager.wareneingangBuchen(mitarbeiter1, artikel1, 300, 2);
+		lager.addToLagerPosten(new Lagerposten(artikel1, 45, 3.02));
+		lager.wareneingangBuchen(mitarbeiter2, artikel1, 23700, 0.21);
+		lager.lagerbestandAusgeben();
 
-//		System.out.println("Lagerposten");
-//		System.out.println(lagposten1.getArtikel().getName() + " " + lagposten1.getLagerbestand() + " " + lagposten1.getPreis());
-//		System.out.println(lagposten2.getArtikel().getName() + " " + lagposten2.getLagerbestand() + " " + lagposten2.getPreis());
-//		System.out.println("----");
+
+
 
 		System.out.println("Mitarbeiter");
-		System.out.println(mitarbeiter1.getId() + " " + mitarbeiter1.getName());
-		System.out.println(mitarbeiter2.getId() + " " + mitarbeiter2.getName());
+		for (Mitarbeiter arbeiter : lager.getBerechtigteMitarbeiter())
+		{
+			System.out.println(arbeiter.getId() + " " + arbeiter.getName());
+		}
 		System.out.println("----");
+
 
 		System.out.println("Bestellposten");
 		System.out.println(besposten1.getArtikelId() + " " + besposten1.getAnzahl());
 		System.out.println(besposten2.getArtikelId() + " " + besposten2.getAnzahl());
 		System.out.println("----");
 
+		System.out.println("Lagerposten");
+		for (Lagerposten lagposten : lager.getLagerPostenListe())
+		{
+			System.out.println(lagposten.getArtikel().getId() + " " + lagposten.getPreis() + " " + lagposten.getLagerbestand());
+		}
+		System.out.println("----");
+
 		System.out.println("Artikel");
 		System.out.println(artikel1.getId() + " " + artikel1.getName() + " " + artikel1.getBeschreibung());
 		System.out.println(artikel2.getId() + " " + artikel2.getName() + " " + artikel2.getBeschreibung());
 		System.out.println("----");
-
-		lager.wareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
-		lager.wareneingangBuchen(mitarbeiter1, artikel1, 300, 2);
-		lager.addToLagerPosten(new Lagerposten(artikel1, 45, 3.02));
-		lager.wareneingangBuchen(mitarbeiter2, artikel1, 23700, 0.21);
-		lager.lagerbestandAusgeben();
 
 
 		Bestellbestaetigung bestellbestaetigung = lager.bestellungAusfuehren(mitarbeiter1, besPostenListe);
