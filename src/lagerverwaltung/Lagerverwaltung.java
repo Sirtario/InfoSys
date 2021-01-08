@@ -175,9 +175,61 @@ public class Lagerverwaltung {
 	{
 		if(posten == null) throw new IllegalArgumentException("posten cannot be null");
 		
-		lagerPostenListe.add(posten);
+		if(PostenAllreadyExists(posten)) 
+		{
+			UpdatePosten(posten);
+		}
+		else 
+		{			
+			lagerPostenListe.add(posten);
+		}
+	}
+	
+	/**
+	 * Prüft ob ein Posten mit dem selben artikel bereits existiert
+	 * @param posten Posten mit artikel, der geprüft werden soll
+	 * @return True wenn es artikel bereits gibt, False wenn nicht
+	 */
+	private boolean PostenAllreadyExists(Lagerposten posten) 
+	{
+		for(Lagerposten p : lagerPostenListe) 
+		{
+			if(p.getArtikel().getId() == posten.getArtikel().getId()) 
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
+	/**
+	 * Updated einen vorhandenen Posten mit den Informationen im gegebenen Posten. 
+	 * Posten werden anhand der in ihnen gespeicherten Artikel und deren ID verglichen.
+	 * Es Wird Der lagerbestand und der preis geupdatet.
+	 * 
+	 * @param postenupdate ein Lagerposten der die informtionen zum updaten enthält.
+	 */
+	private void UpdatePosten(Lagerposten postenupdate) 
+	{
+		Lagerposten postenToBeUpdated = null;
+		
+		for(Lagerposten p : lagerPostenListe) 
+		{
+			if(p.getArtikel().getId() == postenupdate.getArtikel().getId()) 
+			{
+				postenToBeUpdated = p;
+			}
+		}
+		
+		if(postenToBeUpdated == null) 
+		{
+			//Kein übereinstimmender Posten gefunden
+			throw new NullPointerException("Could not find Posten to Update");
+		}
+		
+		postenToBeUpdated.setLagerbestand(postenToBeUpdated.getLagerbestand()+postenupdate.getLagerbestand());
+		postenToBeUpdated.setPreis(postenupdate.getPreis());
+	}
 
 	/**
 	 * Gibt die Lagerposten als Liste zurück.
