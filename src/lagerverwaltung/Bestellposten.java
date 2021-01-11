@@ -9,6 +9,8 @@ public class Bestellposten
 
     private final String artikelId;
     private final int anzahl;
+    //Kann final sein, da Bestellposten bei der Abarbeitung sowieso nur komplett oder gar nicht ausgeführt werden
+    //Zudem kann ein Bestellposten auch gar nicht verändert werden (bisher nicht vorgesehen)
 
 
     /**
