@@ -1,6 +1,7 @@
 package lagerverwaltung;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Start {
@@ -22,7 +23,6 @@ public class Start {
 		besPostenListe.add(besposten2);
 
 		lager.berechtigungErteilen(mitarbeiter1);
-		//lager.BerechtigungEntziehen(mitarbeiter1);
 		lager.berechtigungErteilen(mitarbeiter2);
 
 		lager.wareneingangBuchen(mitarbeiter1, artikel2, 150, 2);
@@ -33,7 +33,7 @@ public class Start {
 
 
 
-
+		//Ausgabe aller Mitarbeiter
 		System.out.println("Mitarbeiter");
 		for (Mitarbeiter arbeiter : lager.getBerechtigteMitarbeiter())
 		{
@@ -64,7 +64,62 @@ public class Start {
 		System.out.println(bestellbestaetigung.getGesamtpreis());
 		System.out.println(bestellbestaetigung.isAusgefuehrt());
 
-		//System.out.println(lager.getLagerPosten().get(0).getLagerbestand()); //Testzwecke
+		System.out.println("----");
+		System.out.println("Lagerposten");
+		for (Lagerposten lagposten : lager.getLagerPostenListe())
+		{
+			System.out.println(lagposten.getArtikel().getId() + " " + lagposten.getPreis() + " " + lagposten.getLagerbestand());
+		}
+		System.out.println("----");
+
+		//Testen ohne Berechtigung
+		lager.berechtigungEntziehen(mitarbeiter1);
+		lager.wareneingangBuchen(mitarbeiter1, artikel2, 20, 0.5);
+		Bestellposten besposten3 = new Bestellposten("2", 2);
+		List<Bestellposten> Bestellung2 = new ArrayList<>();
+		Bestellung2.add(besposten3);
+		lager.bestellungAusfuehren(mitarbeiter1, Bestellung2);
+
+		System.out.println("Lagerposten");
+		for (Lagerposten lagposten : lager.getLagerPostenListe())
+		{
+			System.out.println(lagposten.getArtikel().getId() + " " + lagposten.getPreis() + " " + lagposten.getLagerbestand());
+		}
+
+		//Verursacht eine Exception, weil Bestellpostenliste leer ist
+		//List<Bestellposten> leereListe = new ArrayList<>();
+		//lager.bestellungAusfuehren(mitarbeiter1, leereListe);
+
+		//Verursacht ebenfalls eine Exception, weil das Lager leer ist
+		//lager.getLagerPostenListe().clear();
+		//lager.bestellungAusfuehren(mitarbeiter1, besPostenListe);
+
+		//Mitarbeiter hinzufügen, der leere Strings hat
+		//Mitarbeiter mitarbeiter3 = new Mitarbeiter("", "");
+		//lager.berechtigungErteilen(mitarbeiter3);
+
+		//Mitarbeiter Rechte geben, der bereits Rechte hat
+		//Sollte keinerlei Effekt haben (außer aufs Log)
+		lager.berechtigungErteilen(mitarbeiter1);
+		lager.berechtigungErteilen(mitarbeiter1);
+		System.out.println("----");
+		System.out.println("Mitarbeiter");
+		for (Mitarbeiter arbeiter : lager.getBerechtigteMitarbeiter())
+		{
+			System.out.println(arbeiter.getId() + " " + arbeiter.getName());
+		}
+		System.out.println("----");
+
+		//Sollte Exception werfen, da der Mitarbeiter beim zweiten Löschen schon keine Berechtigung mehr hat
+		//lager.berechtigungEntziehen(mitarbeiter1);
+		//lager.berechtigungEntziehen(mitarbeiter1);
+
+		//Sollte Exception werfen, da Anzahl nicht <= 0 sein darf
+		//lager.wareneingangBuchen(mitarbeiter1, artikel1, -5, 50);
+		//Sollte Exception werfen, da Preis nicht < 0 sein darf
+		//lager.wareneingangBuchen(mitarbeiter1, artikel1, 27, -5);
+
+
 	}
 
 

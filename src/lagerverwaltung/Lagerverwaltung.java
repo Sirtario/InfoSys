@@ -46,6 +46,7 @@ public class Lagerverwaltung {
 	public void berechtigungErteilen(Mitarbeiter arbeiter)
 	{
 		if (arbeiter.getName() == null || arbeiter.getId() == null) throw new IllegalArgumentException("Name oder Id ist null");
+		if (arbeiter.getName().equals("") || arbeiter.getId().equals("")) throw new IllegalArgumentException("Name oder ID ist leer");
 
 		berechtigteMitarbeiter.add(arbeiter);
 		schreibNachrichtInDatei("Berechtigung erteilt für " + arbeiter.getName());
@@ -60,6 +61,7 @@ public class Lagerverwaltung {
 	public void berechtigungEntziehen(Mitarbeiter arbeiter)
 	{
 		if (arbeiter.getName() == null || arbeiter.getId() == null) throw new IllegalArgumentException("Name oder ID ist null");
+		if (arbeiter.getName().equals("") || arbeiter.getId().equals("")) throw new IllegalArgumentException("Name oder ID ist leer");
 
 		if (!berechtigteMitarbeiter.remove(arbeiter)) throw new IllegalArgumentException("Mitarbeiter not found");
 		
@@ -91,6 +93,13 @@ public class Lagerverwaltung {
 	 */
 	public void wareneingangBuchen(Mitarbeiter arbeiter, Artikel artikel, int anzahl, double preis)
 	{
+		if (preis < 0) throw new IllegalArgumentException("Der Preis eines Artikels kann nicht negativ sein!");
+		if (anzahl <= 0) throw new IllegalArgumentException("Die Anzahl eines Artikels kann nicht 0 oder negativ sein!");
+
+		if (artikel.getId().equals("") || artikel.getId() == null) throw new IllegalArgumentException("Ungültiger Artikel, ID fehlerhaft");
+		if (artikel.getName().equals("") || artikel.getName() == null) throw new IllegalArgumentException("Ungültiger Artikel, Name fehlerhaft");
+		if (artikel.getBeschreibung().equals("") || artikel.getBeschreibung() == null) throw new IllegalArgumentException("Ungültiger Artikel, Beschreibung fehlerhaft");
+
 		//Wareneingang nur zulässig, wenn ein berechtiger Mitarbeiter dies ausführt
 		if(berechtigteMitarbeiter.contains(arbeiter)) 
 		{
