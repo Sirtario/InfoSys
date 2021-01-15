@@ -141,9 +141,7 @@ public class Lagerverwaltung {
 				{
 					if (lagPosten.getLagerbestand() >= besPosten.getAnzahl()) //Gibt es von Artikel mehr oder genau so viel Bestand, als Bestellposten verlangt?
 					{
-						lagPosten.setLagerbestand(lagPosten.getLagerbestand() - besPosten.getAnzahl()); //Lagerpostenbestand wird um Anzahl des Bestellpostens verringert
 						gesamtpreis += lagPosten.getPreis() * besPosten.getAnzahl();
-						if (lagPosten.getLagerbestand() == 0) { lagerPostenListe.remove(lagPosten); } //Ist der Bestand eines Lagerpostens 0, gibt es diesen effektiv nicht mehr
 						break; //Damit, bei erfolgreichem Abziehen, nicht unnötig nach weiteren Übereinstimmungen der ArtikelID gesucht wird
 					} else
 					{
@@ -159,6 +157,19 @@ public class Lagerverwaltung {
 				}
 			}
 		}
+
+		//Bestellung ist möglich - jetzt Bestände aktualisieren
+		for (Bestellposten besPosten : besPostenListe)
+		{
+			for (Lagerposten lagPosten : lagerPostenListe)
+			{
+				if (besPosten.getArtikelId().equals(lagPosten.getArtikel().getId()))
+					lagPosten.setLagerbestand(lagPosten.getLagerbestand() - besPosten.getAnzahl()); //Lagerpostenbestand wird um Anzahl des Bestellpostens verringert
+			}
+		}
+
+		//Ist der Bestand eines Lagerpostens 0, gibt es diesen effektiv nicht mehr
+		lagerPostenListe.removeIf(lagPosten -> lagPosten.getLagerbestand() == 0);
 
 		//Bestellung ist erfolgreich gewesen und jetzt wird geloggt, welche Artikel rausgingen
 		//StringBuilder Vorschlag von IDE; soll laut Recherche wohl bessere Performanz aufweisen und weniger fehleranfällig sein

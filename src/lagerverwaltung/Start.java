@@ -119,8 +119,26 @@ public class Start {
 		//Sollte Exception werfen, da Preis nicht < 0 sein darf
 		//lager.wareneingangBuchen(mitarbeiter1, artikel1, 27, -5);
 
+		lager.getLagerPostenListe().clear();
+		lager.addToLagerPosten(new Lagerposten(artikel1, 50, 2));
+		Bestellposten besposten4 = new Bestellposten("1", 50);
+		Bestellposten besposten5 = new Bestellposten("2" , 50);
+		List<Bestellposten> ListeOhneVeraenderung = new ArrayList<>();
+		ListeOhneVeraenderung.add(besposten4);
+		ListeOhneVeraenderung.add(besposten5);
+		System.out.println("Hier darf keine Veränderung passieren!");
+		for (Lagerposten lagposten : lager.getLagerPostenListe())
+		{
+			System.out.println(lagposten.getArtikel().getId() + " " + lagposten.getPreis() + " " + lagposten.getLagerbestand());
+		}
+		Bestellbestaetigung bestellbestaetigung2 = lager.bestellungAusfuehren(mitarbeiter1, ListeOhneVeraenderung);
+		for (Lagerposten lagposten : lager.getLagerPostenListe())
+		{
+			System.out.println(lagposten.getArtikel().getId() + " " + lagposten.getPreis() + " " + lagposten.getLagerbestand());
+		}
 
 	}
+
 
 
 }
